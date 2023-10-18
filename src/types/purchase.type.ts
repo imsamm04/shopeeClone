@@ -20,3 +20,8 @@ export interface ExtendedPurchase extends Purchase {
   disabled: boolean
   checked: boolean
 }
+
+export interface extendedPurchases extends Purchase {
+  disable: boolean
+  checked: boolean
+}

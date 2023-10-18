@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import productApi from 'src/apis/product.api'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
@@ -11,6 +11,7 @@ import purchaseApi from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import path from 'src/constants/path'
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState(1)
@@ -25,7 +26,7 @@ export default function ProductDetail() {
   const product = productDetailData?.data.data
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
-
+  const navigate = useNavigate()
   const currentImages = useMemo(
     () => (product ? product.images.slice(...currentIndexImages) : []),
     [product, currentIndexImages]
@@ -102,6 +103,16 @@ export default function ProductDetail() {
         }
       }
     )
+  }
+
+  const buyNow = async () => {
+    const res = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
+    const purchase = res.data.data
+    navigate(path.cart, {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
   }
 
   if (!product) return null
@@ -229,7 +240,10 @@ export default function ProductDetail() {
                   </svg>
                   Thêm vào giỏ hàng
                 </button>
-                <button className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                <button
+                  onClick={buyNow}
+                  className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                >
                   Mua ngay
                 </button>
               </div>
