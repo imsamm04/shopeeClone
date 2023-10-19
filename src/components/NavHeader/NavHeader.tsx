@@ -70,7 +70,7 @@ export default function NavHeader() {
           renderPopover={
             <div className='rounded-sm border border-green-200 bg-white shadow-md'>
               <Link
-                to='/profile'
+                to='/user/profile'
                 className='block w-full bg-white px-3 py-2 text-left hover:bg-slate-100 hover:text-cyan-500'
               >
                 Tài khoản của tôi
