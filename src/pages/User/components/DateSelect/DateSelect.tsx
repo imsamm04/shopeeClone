@@ -1,0 +1,72 @@
+import { range } from 'lodash'
+import React, { useState } from 'react'
+
+interface Props {
+  onChange?: (value: Date) => void
+  value?: Date
+  errorMessage?: string
+}
+
+export default function DateSelect({ value, onChange, errorMessage }: Props) {
+  const [date, setDate] = useState({
+    date: value?.getDate() || 1,
+    month: value?.getMonth() || 0,
+    year: value?.getFullYear() || 1990
+  })
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = event.target
+    const newDate = {
+      ...date,
+      [name]: value
+    }
+    setDate(newDate)
+    onChange && onChange(new Date(newDate.year, newDate.month, newDate.date))
+  }
+  return (
+    <div className='mb-6 w-[70%] pl-5'>
+      <div className='flex justify-between'>
+        <select
+          onChange={handleChange}
+          name='date'
+          value={value?.getDate() || date.date}
+          className='hover: h-10 w-[32%] cursor-pointer rounded-sm border border-black/10 border-orange px-3'
+        >
+          <option disabled>Ngày sinh</option>
+          {range(1, 32).map((item) => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+        <select
+          onChange={handleChange}
+          name='month'
+          value={value?.getMonth() || date.month}
+          className='hover: h-10 w-[32%] cursor-pointer rounded-sm border border-black/10 border-orange px-3'
+        >
+          <option disabled>Tháng sinh</option>
+          {range(0, 12).map((item) => (
+            <option value={item} key={item}>
+              {item + 1}
+            </option>
+          ))}
+        </select>
+        <select
+          onChange={handleChange}
+          name='year'
+          value={value?.getFullYear() || date.year}
+          className='hover: h-10 w-[32%] cursor-pointer rounded-sm border border-black/10 border-orange px-3'
+        >
+          <option disabled>Năm sinh</option>
+          {range(1990, 2024).map((item) => (
+            <option value={item} key={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className='mt-1 min-h-[1.25rem] text-sm text-red-600'>{errorMessage}</div>
+    </div>
+  )
+}

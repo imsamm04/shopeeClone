@@ -1,13 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import userApi from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
-import { UserSchema, userSchema } from 'src/utils/rules'
+import { userSchema, UserSchema } from 'src/utils/rules'
 import { date } from 'yup'
+import DateSelect from '../User/components/DateSelect'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 // type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -40,8 +41,19 @@ export default function Profile() {
     queryFn: userApi.getProfile
   })
   const profile = profileData?.data.data
+  const updateProfileMutation = useMutation(userApi.updateProfile)
 
-  console.log('profile', profile)
+  // console.log('profile', profile)
+
+  const onSubmit = handleSubmit(async (data) => {
+    console.log('data =>> ', data)
+
+    await updateProfileMutation.mutateAsync
+  })
+
+  const value = watch()
+  console.log('value', value)
+  console.log('errors', errors)
 
   useEffect(() => {
     if (profile) {
@@ -59,7 +71,7 @@ export default function Profile() {
         <h1 className='text-lg font-medium capitalize text-gray-900'>Hồ sơ của tôi</h1>
         <div className='text-grey-700 mt-1 text-sm'>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
       </div>
-      <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start'>
+      <form className='mt-8 flex flex-col-reverse md:flex-row md:items-start' onSubmit={onSubmit}>
         <div className='mt-6 flex-grow pr-12 md:items-start'>
           <div className='flex flex-wrap'>
             <div className='w-[30%] truncate pt-3 text-right capitalize'>Email</div>
@@ -111,19 +123,17 @@ export default function Profile() {
           </div>
           <div className='mt-2 flex flex-wrap'>
             <div className='w-[30%] truncate pt-3 text-right capitalize'>Ngày sinh</div>
-            <div className='mb-6 w-[70%] pl-5'>
-              <div className='flex justify-between'>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3'>
-                  <option disabled>Ngày</option>
-                </select>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3'>
-                  <option disabled>Tháng</option>
-                </select>
-                <select className='h-10 w-[32%] rounded-sm border border-black/10 px-3'>
-                  <option disabled>Năm</option>
-                </select>
-              </div>
-            </div>
+            <Controller
+              control={control}
+              name='date_of_birth'
+              render={({ field }) => (
+                <DateSelect
+                  errorMessage={errors.date_of_birth?.message}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
             <div className='w-[30%] truncate pt-3 text-right capitalize' />
             <div className='w-[70%] pl-5'>
               <Button className='flex h-9 items-center bg-orange px-5 text-center text-sm text-white hover:bg-orange/80'>
