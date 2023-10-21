@@ -14,9 +14,7 @@ import { AppContext } from 'src/context/app.context'
 import { setProfiletoLS } from 'src/utils/auth'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
-// type FormDataError = Omit<FormData, 'date_of_birth'> & {
-//   date_of_birth?: string
-// }
+
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export default function Profile() {
@@ -38,7 +36,6 @@ export default function Profile() {
       date_of_birth: new Date(1990, 0, 1)
     },
     resolver: yupResolver(profileSchema)
-    // resolver: yupResolver(loginSchema)
   })
   const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
@@ -46,8 +43,6 @@ export default function Profile() {
   })
   const profile = profileData?.data.data
   const updateProfileMutation = useMutation(userApi.updateProfile)
-
-  // console.log('profile', profile)
 
   const onSubmit = handleSubmit(async (data) => {
     console.log('data =>> ', data)
