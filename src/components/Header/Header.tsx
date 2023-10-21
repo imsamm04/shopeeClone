@@ -30,7 +30,7 @@ export default function Header() {
   //   resolver: yupResolver(nameSchema)
   // })
 
-  const { isAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, profile } = useContext(AppContext)
   const { onSubmitSearch, register } = useSearchProducts()
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],

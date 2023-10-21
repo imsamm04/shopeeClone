@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
+import userImage from 'src/assets/images/user.svg'
 // import { queryClient } from 'src/main'
 import { purchasesStatus } from 'src/constants/purchase'
 
@@ -14,6 +15,8 @@ export default function NavHeader() {
   const handleLogout = () => {
     logoutMutation.mutate()
   }
+
+  console.log('profile=>>', profile)
 
   const logoutMutation = useMutation({
     mutationFn: authApi.logout,
@@ -91,11 +94,7 @@ export default function NavHeader() {
           }
         >
           <div className='mr-2 h-6 w-6 flex-shrink-0'>
-            <img
-              src='https://down-vn.img.susercontent.com/file/b8f6435c4623d5bd4b0e0b58f9d52ccc_tn'
-              alt=''
-              className='h-full w-full rounded-full object-cover'
-            />
+            <img src={profile?.avatar || userImage} alt='' className='h-full w-full rounded-full object-cover' />
           </div>
           <div>{profile?.email}</div>
         </Popover>
