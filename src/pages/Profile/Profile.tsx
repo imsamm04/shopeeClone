@@ -7,7 +7,6 @@ import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
 import { userSchema, UserSchema } from 'src/utils/rules'
-import { date } from 'yup'
 import DateSelect from '../User/components/DateSelect'
 import { toast } from 'react-toastify'
 import { AppContext } from 'src/context/app.context'
@@ -15,6 +14,7 @@ import { setProfileToLS } from 'src/utils/auth'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import config from 'src/constants/config'
+import InputFile from 'src/components/InputFile'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -106,17 +106,8 @@ export default function Profile() {
     }
   }, [profile, setValue])
 
-  const handleUpload = () => {
-    fileInputRef.current?.click()
-  }
-
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileFromLocal = event.target.files?.[0]
-    if (fileFromLocal && (fileFromLocal.size >= config.maxSizeUploadAvatar || !fileFromLocal.type.includes('image'))) {
-      toast.error('Dung lượng file tối đa 1MB Định dạng : JPEG,.PNG')
-    } else {
-      setFile(fileFromLocal)
-    }
+  const handleChangeFile = (file?: File) => {
+    setFile(file)
   }
 
   return (
@@ -205,7 +196,8 @@ export default function Profile() {
                 alt=''
               />
             </div>
-            <input
+            <InputFile onChange={handleChangeFile} />
+            {/* <input
               ref={fileInputRef}
               onChange={onFileChange}
               className='hidden'
@@ -220,7 +212,7 @@ export default function Profile() {
               className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-gray-600 shadow-sm'
             >
               Chọn ảnh
-            </button>
+            </button> */}
             <div className='mt-3 text-gray-400'>
               <div>Dung lượng file tối đa 1MB</div>
               <div>Định dạng : JPEG, .PNG</div>
