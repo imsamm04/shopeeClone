@@ -23,14 +23,8 @@ const MAX_PURCHASES = 5
 
 export default function Header() {
   const queryConfig = useQueryConfig()
-  // const { register, handleSubmit } = useForm<FormData>({
-  //   defaultValues: {
-  //     name: ''
-  //   },
-  //   resolver: yupResolver(nameSchema)
-  // })
 
-  const { isAuthenticated, profile } = useContext(AppContext)
+  const { isAuthenticated } = useContext(AppContext)
   const { onSubmitSearch, register } = useSearchProducts()
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
