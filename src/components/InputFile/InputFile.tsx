@@ -33,7 +33,6 @@ export default function InputFile({ onChange }: Props) {
         ref={fileInputRef}
         onChange={onFileChange}
         onClick={(event) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ;(event.target as any).value = null
         }}
       />

@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
-import userImage from 'src/assets/images/user.svg'
-// import { queryClient } from 'src/main'
 import { purchasesStatus } from 'src/constants/purchase'
 import { getAvatarUrl } from 'src/utils/utils'
 
@@ -30,8 +28,6 @@ export default function NavHeader() {
   return (
     <div className='flex justify-end'>
       <Popover
-        // as='span'
-        // initialOpen={false}
         className='flex cursor-pointer items-center py-1 hover:text-gray-300'
         renderPopover={
           <div className='relative rounded-sm border border-green-200 bg-white shadow-md'>
