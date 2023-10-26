@@ -32,7 +32,6 @@ export default function Input<TFieldValues extends FieldValues = FieldValues>({
 
   const handleType = () => {
     if (rest.type === 'password') {
-      debugger
       return openEye ? 'text' : 'password'
     }
     return rest.type
